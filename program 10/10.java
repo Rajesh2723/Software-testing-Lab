@@ -1,28 +1,28 @@
-package pg10;
+package url;
+
 import org.openqa.selenium.chrome.ChromeDriver;
-public class pg10 {
 
-public static void main(String[] args) {
-// TODO Auto-generated method stub
-System.setProperty("webdriver.chrome.driver","C:\\Users\\Student\\Desktop\\chromedriver.exe");
-ChromeDriver driver = new ChromeDriver();
-driver.get("https://en.wikipedia.org/wiki/Wikipedia");
-driver.manage().window().maximize();
-String str=driver.getTitle();
-String str1=driver.getCurrentUrl();
-System.out.println("title of this web is'"+str+"'");
-System.out.println("url of this web is'"+str1+"'");
-
-if(str.equals("Wikiped - Wikipedia") && str1.equals("https://en.wikipedia.org/wiki/Wikipedia") ){
- System.out.println(true);}
-
-else {
-
-System.out.println(false);
-}
-
-
-
-}
-
+public class prog10 {
+	public static void main(String args[]) {
+		System.setProperty("webdriver.chromedriver.driver", "C:\\Users\\DELL\\Downloads\\chromedriver.exe");
+		ChromeDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://en.wikipedia.org/wiki/Main_Page");
+		String url=driver.getCurrentUrl();
+		System.out.println("Current URL:"+url);
+		if(url.equals("https://en.wikipedia.org/wiki/Main_Page"))
+			System.out.println("URL MATCHES");
+	else 
+		System.out.println("URL NOT MATCHED");
+	
+		driver.get("https://www.google.com");
+		String title=driver.getTitle();
+		System.out.println("Current Title:"+title);
+		if(title.equals("Google")) {
+			System.out.println("TITLE MATCHES");
+		}else {
+			System.out.println("title doesnt matches");
+		}
+		
+	}
 }
