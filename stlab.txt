@@ -1,0 +1,1417 @@
+P1: ATM System
+
+Code:
+package stlab;
+import java.util.*;
+
+class Check{
+int checkPin(int p,int i){
+if(p==i)
+return 1;
+System.out.println("Invalid PIN number");
+return 0;
+}
+int checkAccount(int t){
+if(t==1){
+System.out.println("Opened Savings account");
+return 1;
+}
+else if(t==2){
+System.out.println("Opened Current account");
+return 1;
+}
+else{
+System.out.println("Invalid Account Type");
+return 0;
+}
+}
+void checkBal(int bal){
+System.out.println("Your available balance is="+bal);
+}
+int withdraw(int a,int b){
+if(a>b){
+System.out.println("Insuffecient funds");
+return 0;
+}
+b=b-a;
+System.out.println("Successful transaction");
+checkBal(b);
+return b;
+}
+int deposit(int a,int b){
+b=b+a;
+System.out.println("Successful transaction");
+checkBal(b);
+return b;
+}
+}
+public class ATM {
+public static void main(String[] args) {
+// TODO Auto-generated method stub
+Scanner sc=new Scanner(System.in);
+Check obj=new Check();
+int r,pass=5555,k=0,balance=5000;
+int inp;
+while(k<3){
+System.out.println("Enter PIN number");
+inp=sc.nextInt();
+r=obj.checkPin(pass,inp);
+if(r==1){
+System.out.println("\nWelcome\n");
+break;
+}
+k++;
+}
+if(k==3){
+System.out.println("Ttransaction Terminated");
+System.exit(0);
+}
+r=0;
+while(r==0){
+System.out.println("Enter the account type\n1-Savings\n2-Current\n");
+int type=sc.nextInt();
+r=obj.checkAccount(type);
+}
+int trans=0;
+while(trans!=4){
+System.out.println("Select transaction:\n\n1-Check Balance\n2-Withdraw\n3-Deposit\n4-Exit\n");
+trans=sc.nextInt();
+switch(trans){
+case 1:
+obj.checkBal(balance);
+break;
+case 2:
+System.out.println("Enter the amount you want to withdraw");
+int amt=sc.nextInt();
+if(amt%500!=0){
+System.out.println("Invalid amount");
+}
+else{
+r=obj.withdraw(amt,balance);
+balance=r;
+};
+break;
+case 3:
+System.out.println("Enter the amount you want to deposit");
+int amt2=sc.nextInt();
+int b=obj.deposit(amt2,balance);
+balance=b;
+break;
+}
+}
+}
+}
+
+
+P2: Triangle Problem
+
+Code:
+package stlab;
+import java.util.*;
+public class Triangle 
+{
+    public String check(int a,int b,int c)
+    {
+   	 if((a>=1 && a<=200) && (b>=1 && b<=200) && (c>=1 && c<=200))
+		{
+			if((a+b>c) && (b+c>a) && (c+a>b))
+			{
+				if(a==b && b==c )
+				{
+					return "Equilateral";
+				}
+				else if(a==b || b==c || c==a)
+				{
+					 return "Isoceles";
+				}
+				else
+				{
+					return "Scalene";
+				}
+			}
+			else
+			{
+				return "Not a Triangle";
+			}
+		}
+		else
+		{
+			return "Invalid Values";
+		}
+    }
+    
+    public static void main(String[] args)
+    {
+    	Scanner sc=new Scanner(System.in);
+        Triangle t=new Triangle();
+        System.out.println("Enter the sides of a triangle");
+        int a=sc.nextInt();
+        int b=sc.nextInt();
+        int c=sc.nextInt();
+        System.out.println(t.check(a, b, c));
+    }
+}
+
+
+P3: Next Date BVA
+
+Code:
+package mstlab;
+
+public class NextDate {
+	public static String next(int d,int m,int y,int cc)
+    {
+   	 if(d==cc)
+   	 {
+   		 d=1;
+   		 if(m==12)
+   		 {
+   		    y++;
+   		    m=1;
+   		 }
+   		 else
+   		 {
+   		   m++;
+   		 }
+   	 }
+   	 else if(d<cc)
+   	 {
+   		 d++;
+   	 }
+   	 else
+   	 {
+   		 return "Invalid Values";
+   	 }
+   	 return (String.valueOf(d)+"."+String.valueOf(m)+"."+String.valueOf(y));
+    }
+    
+    public String nextday(int d,int m,int y)
+    {
+   	 if(d>=1 && d<=31 && m>=1 && m<=12 && y>=1819 && y<=2019)
+   	 {
+   		 switch(m)
+   		 {
+   		    case 1 :
+   		    case 3 :
+   		    case 5 :
+   		    case 7 :
+   		    case 8 :
+   		    case 10:
+   		    case 12: return(next(d,m,y,31));
+   		    case 4 :
+   		    case 6 :
+   		    case 9 :
+   		    case 11: return(next(d,m,y,30));
+   		    default : return(next(d,m,y,((y%4==0 && y%100!=0) || y%400==0)?29:28));
+   		 }
+   	 }
+       return "Invalid Values";
+    }
+}
+
+Junit:
+package mstlab;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import mstlab.NextDate;
+
+public class NextDateTest {
+	
+	// Normal BVT (min, min+,nominal, max-, max)
+	
+	@Test
+	public void test() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1819),"16.6.1819");
+	}
+	
+	@Test
+	public void test1() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1820),"16.6.1820");
+	}
+	
+	@Test
+	public void test2() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1919),"16.6.1919");
+	}
+	
+	@Test
+	public void test3() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2018),"16.6.2018");
+	}
+	
+	@Test
+	public void test4() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2019),"16.6.2019");
+	}
+	//Similarly Consider values for date and month
+	
+	// Robust BVT (min-, min, min+,nominal, max-, max, max+)
+	
+	@Test
+	public void test5() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test6() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1819),"16.6.1819");
+	}
+	
+	@Test
+	public void test7() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1820),"16.6.1820");
+	}
+	
+	@Test
+	public void test8() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1919),"16.6.1919");
+	}
+	
+	@Test
+	public void test9() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2018),"16.6.2018");
+	}
+	
+	@Test
+	public void test10() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2019),"16.6.2019");
+	}
+	
+	@Test
+	public void test11() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2020),"Invalid Values");
+	}
+	//Similarly Consider values for date and month
+	
+	//Worst-Case BVT (10 out of 125)
+	@Test
+	public void test12() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1819),"2.1.1819");
+	}
+	
+	@Test
+	public void test13() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1820),"2.1.1820");
+	}
+	
+	@Test
+	public void test14() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1919),"2.1.1919");
+	}
+	
+	@Test
+	public void test15() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,2018),"2.1.2018");
+	}
+	
+	@Test
+	public void test16() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,2019),"2.1.2019");
+	}
+	
+	@Test
+	public void test17() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1819),"2.2.1819");
+	}
+	
+	@Test
+	public void test18() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1820),"2.2.1820");
+	}
+	
+	@Test
+	public void test19()
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1919),"2.2.1919");
+	}
+	
+	@Test
+	public void test20() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,2018),"2.2.2018");
+	}
+	
+	@Test
+	public void test21() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,2019),"2.2.2019");
+	}
+	
+	@Test
+	public void test22() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,6,1819),"2.6.1819");
+	}
+	
+	@Test
+	public void test23() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,6,1820),"2.6.1820");
+	}
+	
+	@Test
+	public void test24()
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,6,1919),"2.6.1919");
+	}
+	
+	@Test
+	public void test25() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,6,2018),"2.6.2018");
+	}
+	
+	@Test
+	public void test26() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,6,2019),"2.6.2019");
+	}
+	
+	// Robust Worst-Case BVT (10 out of 343)
+	
+	@Test
+	public void test27() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test28() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1819),"2.1.1819");
+	}
+	
+	@Test
+	public void test29() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1820),"2.1.1820");
+	}
+	
+	@Test
+	public void test30() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,1919),"2.1.1919");
+	}
+	
+	@Test
+	public void test31() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,2018),"2.1.2018");
+	}
+	
+	@Test
+	public void test32() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,2019),"2.1.2019");
+	}
+	
+	@Test
+	public void test33() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,1,2020),"Invalid Values");
+	}
+	
+	@Test
+	public void test34() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test35() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1819),"2.2.1819");
+	}
+	
+	@Test
+	public void test36() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1820),"2.2.1820");
+	}
+	
+	@Test
+	public void test37() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,1919),"2.2.1919");
+	}
+	
+	@Test
+	public void test38() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,2018),"2.2.2018");
+	}
+	
+	@Test
+	public void test39() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,2019),"2.2.2019");
+	}
+	
+	@Test
+	public void test40() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(1,2,2020),"Invalid Values");
+	}
+}
+
+
+P4: NextDate Equivalence Class
+
+Code Same as P3
+Junit:
+
+package mstlab;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import mstlab.NextDate;
+
+public class NextDateTest {
+	
+	//Weak and Strong Normal ECP
+	@Test
+	public void test() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1919),"16.6.1919");
+	}
+	
+	// Weak Robust ECP
+	@Test
+	public void test1() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1919),"16.6.1919");
+	}
+	
+	@Test
+	public void test2() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(0,6,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test3() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(32,6,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test4() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,0,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test5() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,13,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test6() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test7() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2020),"Invalid Values");
+	}
+	
+	// Strong Robust ECP
+	
+	@Test
+	public void test8() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1919),"16.6.1919");
+	}
+	
+	@Test
+	public void test9() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(0,6,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test10() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(32,6,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test11() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,0,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test12() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,13,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test13() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test14() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,6,2020),"Invalid Values");
+	}
+	
+	@Test
+	public void test15() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(0,0,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test16() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(32,13,1919),"Invalid Values");
+	}
+	
+	@Test
+	public void test17() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(0,6,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test18() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(32,6,2020),"Invalid Values");
+	}
+	
+	@Test
+	public void test19() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,0,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test20() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(15,13,2020),"Invalid Values");
+	}
+	
+	@Test
+	public void test21() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(0,0,1818),"Invalid Values");
+	}
+	
+	@Test
+	public void test22() 
+	{
+		NextDate obj= new NextDate();
+		assertEquals(obj.nextday(32,13,2020),"Invalid Values");
+	}
+
+}
+
+
+P5: Triangle White Box
+
+Code:
+package mstlab1;
+
+public class Triang {
+	public String check(int a,int b,int c){
+		if((a>=1 && a<=200) && (b>=1 && b<=200) && (c>=1 && c<=200))
+		{
+			if((a+b>c)&&(b+c>a)&&(c+a>b))
+			{
+				if(a==b && b==c)
+				{
+					return ("Equilateral");
+				}
+				else if(a==b||b==c||c==a){
+					return ("Isosceles");
+					
+				}
+				else
+					return ("Scalene");
+				
+					
+			}
+			return ("Not a Triangle");
+		}
+		return ("Invalid Values");
+	}
+
+}
+
+Junit:
+package mstlab1;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import mstlab1.Triang;
+
+public class TriangTest {
+
+	Triang t= new Triang();
+	@Test
+	public void test()
+	{
+		assertEquals(t.check(20,20,50),"Not a Triangle");
+	} 
+	
+	@Test
+	public void test1()
+	{
+		assertEquals(t.check(50,200,50),"Not a Triangle");
+	} 
+
+	@Test
+	public void test2()
+	{
+		assertEquals(t.check(20,30,70),"Not a Triangle");
+	}
+	
+	@Test
+	public void test3()
+	{
+		assertEquals(t.check(100,100,100),"Equilateral");
+	}
+	
+	@Test
+	public void test4()
+	{
+		
+		assertEquals(t.check(100,101,105),"Scalene");
+	}
+	
+	
+	@Test
+	public void test5()
+	{
+		assertEquals(t.check(40,60,40),"Isosceles");
+	} 
+	
+	@Test
+	public void test6()
+	{
+		assertEquals(t.check(100,100,2),"Isosceles");
+	} 
+
+	@Test
+	public void test7()
+	{
+		assertEquals(t.check(100,100,55),"Isosceles");
+	}
+	
+	@Test
+	public void test8()
+	{
+		
+		assertEquals(t.check(199,100,100),"Isosceles");
+	}
+	
+@Test
+	public void test10()
+	{
+		
+		assertEquals(t.check(100,100,200),"Not a Triangle");
+	}
+
+@Test
+public void test11()
+{
+	
+	assertEquals(t.check(0,200,100),"Invalid Values");
+}
+
+@Test
+public void test12()
+{
+	
+	assertEquals(t.check(201,200,100),"Invalid Values");
+}
+
+@Test
+public void test13()
+{
+	
+	assertEquals(t.check(200,200,500),"Invalid Values");
+}
+
+@Test
+public void test14()
+{
+	
+	assertEquals(t.check(0,200,500),"Invalid Values");
+}
+
+@Test
+public void test15()
+{
+	
+	assertEquals(t.check(200,0,200),"Invalid Values");
+}
+
+@Test
+public void test16()
+{
+	
+	assertEquals(t.check(0,0,200),"Invalid Values");
+}
+
+}
+
+
+P6: NextDate White Box
+
+Code:
+package mstlab;
+
+public class NextDate {
+	public static String next(int d, int m, int y, int cc)
+	{
+	if(d==cc)
+	{
+	d=1;
+	if(m==12)
+	{
+	y++;
+	m=1;
+	}
+	else
+	{
+	m++;
+	}
+	}
+	else
+	{
+	d++;
+	}
+	return(String.valueOf(d)+"/"+String.valueOf(m)+"/"+String.valueOf(y));
+	}
+	public String nextday(int d, int m, int y)
+	{
+	if(d>=1 && d<=31 && m>=1 && m<=12 && y>=1812 && y<=2012)
+	{
+	switch(m)
+	{
+	case 1:
+	case 3:return(next(d,m,y,31));
+	case 5:return(next(d,m,y,31));
+	case 7:return(next(d,m,y,31));
+
+	case 8:return(next(d,m,y,31));
+	case 10:return(next(d,m,y,31));
+	case 12: return(next(d,m,y,31));
+	case 4: return(next(d,m,y,30));
+	case 6: return(next(d,m,y,30));
+	case 9: return(next(d,m,y,30));
+	case 11: return(next(d,m,y,30));
+	default: return(next(d,m,y,((y%4==0 && y%100!=0) || y%400==0)?29:28));
+	}
+	}
+	return "Invalid Values";
+	}
+}
+
+Junit:
+package mstlab;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import mstlab.NextDate;
+
+public class NextDateTest {
+	
+	//weak and strong normal test case
+	@Test
+	public void test1()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(15,6,1912),"16/6/1912");
+	}
+	@Test
+	public void test2()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(10,6,1912),"11/6/1912");
+	}
+	@Test
+	public void test3()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(10,6,1900),"11/6/1900");
+	}
+	@Test
+	public void test4()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(10,5,1912),"11/5/1912");
+	}
+	@Test
+	public void test5()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(20,10,2010),"21/10/2010");
+	}
+	//weak robust test cases
+	@Test
+	public void test6()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(-1,10,1912),"Invalid Values");
+	}
+	@Test
+	public void test7()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,7,1912),"13/7/1912");
+	}
+	@Test
+	public void test8()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,8,1912),"13/8/1912");
+	}
+	@Test
+	public void test9()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,4,1912),"13/4/1912");
+	}
+	@Test
+	public void test10()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,9,1912),"13/9/1912");
+	}
+	@Test
+	public void test11()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,1,1912),"13/1/1912");
+	}
+	@Test
+	public void test_12()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,2,1912),"13/2/1912");
+	}
+	@Test
+	public void test13()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(12,3,1912),"13/3/1912");
+	}
+	@Test
+	public void test14()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(10,3,1912),"11/3/1912");
+	}
+	@Test
+	public void test15()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(15,13,1912),"Invalid Values");
+	}
+	@Test
+	public void test16()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(1,6,2200),"Invalid Values");
+	}
+	@Test
+	public void test17()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(32,6,1912),"Invalid Values");
+	}
+	@Test
+	public void test18()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(15,6,1811),"Invalid Values");
+	}
+	@Test
+	public void test19()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(15,6,2013),"Invalid Values");
+	}
+	
+	// Strong Robust
+	@Test
+	public void test20()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(2,1,1912),"3/1/1912");
+	}
+	@Test
+	public void test21()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(-1,3,1900),"Invalid Values");
+	}
+	@Test
+	public void test22()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(15,0,1811),"Invalid Values");
+	}
+	@Test
+	public void test23()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(33,12,1912),"Invalid Values");
+	}
+	@Test
+	public void test24()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(15,-1,-1),"Invalid Values");
+	}
+	@Test
+	public void test25()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(-1,6,-1),"Invalid Values");
+	}
+	@Test
+	public void test26()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(-1,-1,-1),"Invalid Values");
+	}
+	@Test
+	public void test27()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(31,12,2010),"1/1/2011");
+
+	}
+	@Test
+	public void test28()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(30,11,2010),"1/12/2010");
+	}
+	
+	// Leap Year
+	@Test
+	public void test29()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(3,2,2010),"4/2/2010");
+	}	
+
+	@Test
+	public void test30()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(28,2,2010),"1/3/2010");
+	}
+	@Test
+	public void test31()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(20,2,2008),"21/2/2008");
+	}
+	@Test
+	public void test32()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(29,2,2000),"1/3/2000");
+	}
+	@Test
+	public void test33()
+	{
+	NextDate ob1=new NextDate();
+	assertEquals(ob1.nextday(28,2,1900),"1/3/1900");
+	}
+}
+
+
+P8: Selenium Automate Any Webpage (use Login Page)
+
+HTML Page:
+<html>
+<body>
+<form>  
+<br>
+<input type="text" id="uname" placeholder="Username"/> <br> <br>
+<input type="password" id="pass" placeholder="Password"/> <br> <br> <br>
+<button id="submit">Submit</button> 
+
+</form>
+</body>
+</html>     
+
+Java Code:
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class pgm8 {
+public static void main(String[] args) throws InterruptedException
+{
+System.setProperty("webdriver.chrome.driver", "D:\\Software\\Eclipse&JAR\\Jar\\chromedriver.exe");
+ChromeDriver driver = new ChromeDriver();
+driver.get("http://demo.guru99.com/test/newtours/index.php"); 
+driver.manage().window().maximize();
+driver.findElement(By.name("userName")).sendKeys("mercury1");
+driver.findElement(By.name("password")).sendKeys("mercury1");
+//Thread.sleep(5000);
+driver.findElement(By.name("submit")).click();
+}
+}
+
+
+P9: List total no of objects present on a web Page (use Login Page) 
+
+HTML use same page as P8
+Java Code:
+package selenium_7c_22_23;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Pgm9 {
+public static void main(String[] args) {
+System.setProperty("webdriver.chrome.driver", "D:\\Software\\Eclipse&JAR\\Jar\\chromedriver.exe");
+ChromeDriver driver = new ChromeDriver();
+driver.get("https://gmail.com");          
+List<WebElement> links = driver.findElements(By.xpath("//a"));  //a refers to tag name ,// select current node
+          int linkCount = links.size();     // Count the total Link list on Web Page
+          
+          System.out.println("Total Number of link count on webpage = "  + linkCount);   
+          //Print the total count of links on webpage
+          
+          List<WebElement> allElements = driver.findElements(By.xpath("//*"));     
+          //Identify all the elements on web page
+            int elementsCount = allElements.size();    
+                   
+         System.out.println("Total Number of All Element on webpage = "  + elementsCount);       
+         //Print the total count of all element on webpage                      
+    }
+}
+
+
+P10: URL and Title Checkpoint (use any website)
+
+Code:
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class st10 {
+public static void main(String args[]){
+System.setProperty("webdriver.chrome.driver", "C:\\Users\\Student\\Desktop\\niharika\\chromedriver.exe");
+ChromeDriver driver = new ChromeDriver();
+driver.manage().window().maximize();
+driver.get("https://en.wikipedia.org/wiki/Wikipedia");
+String url = driver.getCurrentUrl();
+System.out.println("Current URL: " + url);
+if(url.equals("https://en.wikipedia.org/wiki/Wikipedia"))
+System.out.println("URL matches!");
+else
+System.out.println("URL doesn't match.");
+driver.get("https://www.google.com");
+String title = driver.getTitle();
+System.out.println("Current Title: " + title);
+if(title.equals("Google"))
+System.out.println("Title matches!");
+else
+System.out.println("Title doesn't match.");
+}
+}
+
+
+P11: Automate Select and Deselect (Use Multiple Select HTML Page)
+
+HTML File:
+<html>
+<head>
+
+<title>
+Select and Deselect
+</title>
+</head>
+<body>
+
+<h1> Select and Deselect </h1>
+<form>
+<select multiple name="dept" id="dept">
+  <option value="cse">CSE</option>
+  <option value="ise">ISE</option>
+  <option value="ece">ECE</option>
+  <option value="eca">MCA</option>
+</select> 
+</form>
+</body>
+</html>
+
+Java Code:
+package select;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class seldes {
+
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\STUDENT\\Desktop\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("file:///C:\\Users\\STUDENT\\Desktop\\select.html");
+		driver.manage().window().maximize();
+		
+		Select select = new Select(driver.findElement(By.id("dept")));
+		System.out.println("The options are: ");
+		
+		List<WebElement> options = select.getOptions();
+		for(WebElement option: options)
+			System.out.println(option.getText());
+		
+		if(select.isMultiple()){
+			System.out.println("Select option 'CSE' by Index");
+			select.selectByIndex(0);
+			Thread.sleep(4000);
+			
+			System.out.println("Select option 'ISE' by Value");
+			select.selectByValue("ise");
+			Thread.sleep(4000);
+			
+			System.out.println("Select option 'ECE' by visible text");
+			select.selectByVisibleText("ECE");
+			Thread.sleep(4000);
+			
+			System.out.println("The selected values are: ");
+			
+			List<WebElement> selectedOptions = select.getAllSelectedOptions();
+			
+			for(WebElement selectedOption: selectedOptions)
+			System.out.println(selectedOption.getText());
+			
+			System.out.println("Deselect option 'CSE' by Index");
+			select.deselectByIndex(0);
+			Thread.sleep(4000);
+			
+			System.out.println("Select option 'ISE' by Value");
+			select.deselectByValue("ise");
+			Thread.sleep(4000);
+			
+			System.out.println("Select option 'ECE' by visible text");
+			select.deselectByVisibleText("ECE");
+			Thread.sleep(4000);
+			
+			System.out.println("The values after deselect are: ");
+			options = select.getAllSelectedOptions();
+			for(WebElement option: options)
+				System.out.println(option.getText());
+			System.out.println("Deselecting all options: ");
+			select.deselectAll();
+			
+			
+	}
+	}
+}
+
+
+P12: Implicit and Explicit Wait
+
+HTML File:
+<html>
+<body>
+<h1 id="welcome"> Welcome </h1>
+</body>
+</html>
+
+Java Code:
+Explicit Wait:
+
+package select;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.time.Duration;
+
+public class seldes {
+	public static void main(String[] args) {
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\STUDENT\\Desktop\\chromedriver.exe");
+		ChromeDriver driver = new ChromeDriver();
+		
+		String a = "Welcome";
+		String b = "";
+		String c = "";
+		
+
+		driver.get("file:///C:\\Users\\STUDENT\\Desktop\\welcome.html");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120,1));
+		try{
+			WebElement w1 = (WebElement) wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("welcome")));
+			b = w1.getText();
+			if (b.equals(a))
+				System.out.println("Test 1 passed using Explicit wait");
+		}
+		catch (TimeoutException e){
+			System.out.println("Test 1 failed using Explicit wait");
+		}
+
+		
+		try{
+			WebElement w2 = (WebElement) wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("abcd")));
+			c = w2.getText();
+			if (c.equals(a))
+				System.out.println("Test 2 passed using Explicit wait");
+		}
+		catch (TimeoutException e){
+			System.out.println("Test 2 failed using Explicit wait");
+		}
+}
+}
+				
+Implicit Wait:
+
+package select;
+
+import java.util.concurrent.TimeUnit;
+import java.util.NoSuchElementException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver.Timeouts;
+
+
+public class seldes {
+	public static void main(String[] args) {
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\STUDENT\\Desktop\\chromedriver.exe");
+		ChromeDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		
+		String a = "Welcome";
+		String b = "";
+		String c = "";
+		
+
+		driver.get("C:\\Users\\STUDENT\\Desktop\\welcome.html");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		try{
+			b = driver.findElement(By.id("welcome")).getText();
+			if (b.equals(a))
+				System.out.println("Test 1 passed using Implicit wait");
+		}
+		catch (NoSuchElementException e){
+			System.out.println("Test 1 failed using Implicit wait");
+		}
+
+		
+		try{
+			c = driver.findElement(By.id("abcd")).getText();
+			if (c.equals(a))
+				System.out.println("Test 2 passed using Implicit wait");
+		}
+		catch (NoSuchElementException e){
+			System.out.println("Test 2 failed using Implicit wait");
+		}
+}
+} 
+
